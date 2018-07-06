@@ -1,0 +1,251 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Title of the document</title>
+</head>
+<style>
+/* Ref: CSS切板 http://mepopedia.com/forum/read.php?804,45304 */
+#dashboard{ padding: 10px; float:left; background-color:'#000'; }
+#content{ width: 1024px; padding: 10px; float: left; }
+header{ clear: both;}
+footer{ clear: both; }
+.resource{ display:none; }
+
+</style>
+
+<body>
+<header>
+    <h1>跟從阿寶那吹來的風</h1>
+</header>
+<section id="content"><canvas id="myCanvas" width="1024" height="921" style="border:1px solid #d3d3d3;"></canvas></section>
+
+<aside id="dashboard">
+<h2>使用說明</h2>
+<ul>
+<li>先選「色碼」或直接略過</li>
+<li>其他操作順序隨意</li>
+<li>屬性用滑鼠點就會切換</li>
+<li>文字輸入完要點「更新文字」才會顯示在左側</li>
+<li>圖片想保留就自行另存吧</li>
+</ul>
+<hr>
+<h2>設定區</h2>
+色碼：<input type="color" id="color" onchange="InitCanvas()" value="#0099FF"> (※改色碼會重置填寫狀態。)<br>
+角色圖：<input type="file" onchange="previewFile()"><br>
+<img class="resource" id="avater" src="" height="200" onload="UpdAvater()">
+<img class="resource" id="blankImage" src="20180704_CanvasTest_BlankForm.JPG">
+<hr>
+名字：<input type="text" id="name" maxlength="5" size="10"> (最多5個字)<br>
+年齡：<input type="text" id="age" maxlength="5" size="10"> (最多5碼 or 兩個字)<br>
+性別：<input type="text" id="gender" maxlength="10" size="10"><br>
+回答者：<input type="text" id="onwer" maxlength="5" size="10"> (最多5個字) <br>
+<button onclick="UpdText()">更新文字 </button>
+</aside>
+<footer>Script by <a href="https://home.gamer.com.tw/homeindex.php">真邪龍之闇翼</a></footer>
+</body>
+
+<script>
+//Basic Function
+//Ref: How to make a simple image upload using Javascript/HTML
+//     https://stackoverflow.com/questions/22087076/how-to-make-a-simple-image-upload-using-javascript-html
+   function previewFile(){
+       var preview = document.querySelector('img'); //selects the query named img
+       var file    = document.querySelector('input[type=file]').files[0]; //sames as here
+       var reader  = new FileReader();
+
+       reader.onloadend = function () {
+           preview.src = reader.result;
+       }
+       if (file) {
+           reader.readAsDataURL(file); //reads the data as a URL
+       } else {
+           //preview.src = "";
+       }
+  }
+
+    //Ref:Canvas Mouse Coordinates Tutorial
+    //    https://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
+    function getMousePos(canvas, evt) {
+      var rect = canvas.getBoundingClientRect();
+      return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+      };
+    }
+
+function ClickAttr(x,y){
+    var newRank;
+    var Row;
+    if(y >=116 && y <= 891){
+        Row = Math.floor((y-116)/40);
+        if(x >= 394 && x <= 509){
+            newRank = Math.floor((x - 394)/25);
+        }
+        if(x >= 783 && x <= 898){
+            newRank = Math.floor((x - 783)/25);
+            Row += 20;
+        }
+    }
+    if(newRank != undefined && Row != undefined){
+        SelRow(Row, AvaterAttr[Row], newRank);
+        AvaterAttr[Row] = newRank;
+    }
+}
+</script>
+
+<script>
+var AvaterAttr = [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+var CommonColor = document.getElementById("color").value;
+//Canvas Function
+//First Load
+window.onload = function(){
+    InitCanvas();
+};   
+
+//Init Canvas
+function InitCanvas(){
+    AvaterAttr = [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+    CommonColor = document.getElementById("color").value;
+    var canvas = document.getElementById("myCanvas");
+    //Ref:Canvas Mouse Coordinates Tutorial
+    //    https://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
+    canvas.addEventListener("click", function(evt){
+      var mousePos = getMousePos(canvas, evt);
+      ClickAttr(mousePos.x,mousePos.y)
+    });
+
+    var ctx = canvas.getContext("2d");
+    var img = document.getElementById("blankImage");
+    ctx.drawImage(img, 0, 0);
+
+    //清空框框
+    ctx.fillStyle = "#FFF";
+    ctx.fillRect(385,112,126,791);
+    ctx.fillRect(774,112,126,670);
+
+    //補上空黑框
+    var oriX = 394;
+    var oriY = 116;
+    var dX = 25;
+    var dY = 40;
+
+    for(i=0; i<5; i++){
+        for(j=0;j < 20;j++)
+        {
+           if(i==2)
+           RenderSel(oriX+(i*dX),oriY+(j*dY),true);
+           else
+           RenderSel(oriX+(i*dX),oriY+(j*dY));
+        }
+    }
+
+    oriX = 394 + (774-385);
+    for(i=0; i<5; i++){
+        for(j=0;j < 17;j++)
+        {
+           if(i==2)
+           RenderSel(oriX+(i*dX),oriY+(j*dY),true);
+           else
+           RenderSel(oriX+(i*dX),oriY+(j*dY));
+        }
+    }
+}
+
+
+//Upload Avater
+function UpdAvater(){
+    var canvas = document.getElementById("myCanvas");
+    var ctxAvater = canvas.getContext("2d");
+    var avaterImg = document.getElementById("avater");
+
+    //ReSize Image
+    var newW = 184
+    var newH = avaterImg.naturalHeight * (184 / avaterImg.naturalWidth)
+    var imgX = 32
+    if(newH < 217)
+    {
+       imgY = 111 + (217-newH)/2;
+    }
+    else
+       imgY = 217;
+
+    //Update Image
+    ctxAvater.fillStyle="#FFF";
+    ctxAvater.fillRect(32,111,184,217);
+    ctxAvater.drawImage(avaterImg,imgX,imgY,newW, newH);
+}
+
+//Fill or Not
+
+function SelRow(iRow, oldRank, newRank){
+    if(oldRank != newRank){
+        var dX = 25;
+        var dY = 40;
+        var rowY = 116 + (dY * (iRow%20))
+        //if 0<iRow<=20, Use X = X1 + (dX * Rank)
+        if(iRow >= 0 && iRow < 20){
+            var rowX = 394;
+        }
+        //if 21<iRow<=37, Use X = X2 + (dX * Rank)
+        else if (iRow >=20 && iRow < 37){
+            var rowX = 394 + (774-385);
+        }
+
+        var oldX = rowX + (dX * oldRank);
+        var newX = rowX + (dX * newRank);
+
+        RenderSel(oldX, rowY, false);
+        RenderSel(newX, rowY, true);       
+    }
+}
+
+function RenderSel(x,y,selected){
+    var canvas = document.getElementById("myCanvas");
+    var block = canvas.getContext("2d");
+    if(selected)
+    {
+        block.fillStyle=CommonColor;
+
+    }
+    else
+        block.fillStyle="#FFF";
+    block.fillRect(x,y,15,15);
+    block.strokeRect(x,y,15,15);
+}
+
+function UpdText(){
+    var canvas = document.getElementById("myCanvas");
+    var ctxFont=canvas.getContext("2d");
+    //Clear
+    ctxFont.fillStyle= "#FFF";
+    ctxFont.fillRect(83,66,136,35);
+    ctxFont.fillRect(273,66,66,35);
+    ctxFont.fillRect(393,66,460,35);
+    ctxFont.fillRect(900,860,128,35);
+    //Render Font
+    ctxFont.fillStyle= CommonColor;
+    ctxFont.font = "24px Verdana";  
+    ctxFont.fillText(document.getElementById("name").value,85,93);  //名前
+    ctxFont.fillText(document.getElementById("age").value,275,93);  //年齡
+    ctxFont.fillText(document.getElementById("gender").value,395,93);  //性別
+    ctxFont.fillText(document.getElementById("onwer").value,902,890);  //回答者
+}
+
+</script>
+</html>
+<!--
+How to make a simple image upload using Javascript/HTML
+https://stackoverflow.com/questions/22087076/how-to-make-a-simple-image-upload-using-javascript-html
+
+HTML Canvas Images
+https://www.w3schools.com/graphics/canvas_images.asp
+
+參數紀錄
+頭像：(33, 111)  => 矩形 184x217
+名前：81,66 => 136 x 35
+年齡：237,66 => 66 x 35
+性別：392, 66 => 460 x 35
+回答者：900, 860 => 128 x 42
+-->
