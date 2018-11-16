@@ -8,6 +8,9 @@ using System.Threading;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
+using CSharpTest.LearnWithTry;
+using CSharpTest.Net;
+
 
 namespace CSharpTest
 {
@@ -16,11 +19,21 @@ namespace CSharpTest
         [STAThread]
         static void Main(string[] args)
         {
-            AsyncSample_SimpleTask a = new AsyncSample_SimpleTask();
-            a.Sim_Task();
-            AsyncSample_Factory ASF = new AsyncSample_Factory();
-            ASF.Sim_BtnClick();
-            Console.Read();
+            try
+            {
+                var test = new HttpClientSample();
+                test.SendRequest("https://http2.github.io");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Console.Read();
+            }
         }
+
+        //捕捉非同步的Exception https://dotblogs.com.tw/sean_liao/2018/01/09/taskexceptionshandling
     }
 }
