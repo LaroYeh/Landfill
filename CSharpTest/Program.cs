@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 using CSharpTest.LearnWithTry;
 using CSharpTest.Net;
-
+using CSharpTest.Converter;
 
 namespace CSharpTest
 {
@@ -19,19 +19,9 @@ namespace CSharpTest
         [STAThread]
         static void Main(string[] args)
         {
-            try
-            {
-                var test = new HttpClientSample();
-                test.SendRequest("https://http2.github.io");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                Console.Read();
-            }
+            ObjectToJson t = new ObjectToJson();
+            t.ToJsonSample();
+            Console.Read();
         }
 
         //捕捉非同步的Exception https://dotblogs.com.tw/sean_liao/2018/01/09/taskexceptionshandling
