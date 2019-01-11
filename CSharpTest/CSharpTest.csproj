@@ -96,6 +96,7 @@
     <Compile Include="Crypt\RSA.cs" />
     <Compile Include="DecodeJWT.cs" />
     <Compile Include="GetClipboard.cs" />
+    <Compile Include="LearnWithTry\BuildTree.cs" />
     <Compile Include="Net\HttpClientSample.cs" />
     <Compile Include="LazyHtmlToPdf.cs" />
     <Compile Include="LearnWithTry\DelegateSample.cs" />
