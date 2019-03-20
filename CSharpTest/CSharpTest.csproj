@@ -92,6 +92,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncSample.cs" />
+    <Compile Include="Codewars\kyu4_52742f58faf5485cae000b9a.cs" />
+    <Compile Include="Codewars\kyu6_iq_test.cs" />
     <Compile Include="Convert\ObjectToJson.cs" />
     <Compile Include="Crypt\RSA.cs" />
     <Compile Include="DecodeJWT.cs" />

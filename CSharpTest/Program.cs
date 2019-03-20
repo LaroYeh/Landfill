@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using CSharpTest.LearnWithTry;
 using CSharpTest.Net;
 using CSharpTest.Converter;
+using CSharpTest.Codewars;
 
 namespace CSharpTest
 {
@@ -19,8 +20,14 @@ namespace CSharpTest
         [STAThread]
         static void Main(string[] args)
         {
-            ObjectToJson t = new ObjectToJson();
-            t.ToJsonSample();
+            string input = Console.ReadLine();
+
+
+            //string output = kyu4_52742f58faf5485cae000b9a.HumanTimeFormat.formatDuration(Convert.ToInt32(input));
+
+            int output = kyu6_iq_test.Test("1 2 3");
+
+            Console.WriteLine(output);
             Console.Read();
         }
 
