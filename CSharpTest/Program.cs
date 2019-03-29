@@ -20,13 +20,12 @@ namespace CSharpTest
         [STAThread]
         static void Main(string[] args)
         {
+            float[] values = Enumerable.Range(0, 100).Select(i => (float)i / 10).ToArray();
+            System.Diagnostics.Debugger.Break();
+
+            UsingDebuggerClass.UsingDebugger();
             string input = Console.ReadLine();
-
-
-            //string output = kyu4_52742f58faf5485cae000b9a.HumanTimeFormat.formatDuration(Convert.ToInt32(input));
-
-            int output = kyu6_iq_test.Test("1 2 3");
-
+            var output = kyu5_52e88b39ffb6ac53a400022e.UInt32ToIP(2149583361);
             Console.WriteLine(output);
             Console.Read();
         }
